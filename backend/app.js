@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const users = require("./routers/users");
 
 const app = express();
 app.use(express.json());
@@ -27,11 +28,8 @@ mongoose
   .then(() => console.log("DataBase has been connected !"))
   .catch((err) => console.log("Cannot connect to database", err.message));
 
-
-app.get("/", (req,res) => {
-    res.send(`Hello`)
-})
-
+// routes
+app.use("/users", users);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
