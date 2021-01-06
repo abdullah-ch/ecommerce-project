@@ -42,7 +42,6 @@ router.post("/register", async (req, res) => {
 });
 
 // logging in
-
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -64,6 +63,17 @@ router.post("/login", async (req, res) => {
     });
 
     res.json({ accessToken });
+  } catch (error) {
+    // 500 means internal service error
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+// logging out
+router.post("/logout", async (req, res) => {
+  try {
+    res.clearCookie("refreshToken", { path: "/users/refreshtoken" });
+    res.json({ msg: "Logged Out" });
   } catch (error) {
     // 500 means internal service error
     return res.status(500).json({ msg: error.message });
