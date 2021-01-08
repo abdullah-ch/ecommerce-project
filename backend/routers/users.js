@@ -29,13 +29,13 @@ router.post("/register", async (req, res) => {
     const accessToken = createAccessToken({ id: user._id });
     const refreshToken = createRefreshToken({ id: user._id });
 
-    res.cookie("refreshToken", refreshToken, {
+    let cookie = res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/users/refreshtoken",
     });
 
-    res.json({ accessToken });
-    //return res.json({ password, newPassword, user, accessToken, refreshToken });
+    //res.json({ accessToken });
+    return res.json({ password, newPassword, user, accessToken, refreshToken });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
   }
@@ -48,21 +48,20 @@ router.post("/login", async (req, res) => {
     let user = await Users.findOne({ email });
     if (!user) return res.status(400).json({ msg: "User does not exist" });
     const isUser = await bcrypt.compare(password, user.password);
-    console.log(isUser);
     if (!isUser) return res.status(400).json({ msg: "Incorrect Password" });
-
-    res.json({ msg: "Successgully logged in" });
 
     // Now if User is authentic, we'll generate access and refresh token
     const accessToken = createAccessToken({ id: user._id });
     const refreshToken = createRefreshToken({ id: user._id });
 
-    res.cookie("refreshToken", refreshToken, {
+    console.log({ accessToken, refreshToken });
+
+    let cookie = res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/users/refreshtoken",
     });
 
-    res.json({ accessToken });
+    return res.json({ user, accessToken, refreshToken });
   } catch (error) {
     // 500 means internal service error
     return res.status(500).json({ msg: error.message });
@@ -70,7 +69,7 @@ router.post("/login", async (req, res) => {
 });
 
 // logging out
-router.post("/logout", async (req, res) => {
+router.get("/logout", async (req, res) => {
   try {
     res.clearCookie("refreshToken", { path: "/users/refreshtoken" });
     res.json({ msg: "Logged Out" });
@@ -83,6 +82,7 @@ router.post("/logout", async (req, res) => {
 router.get("/refreshtoken", (req, res) => {
   try {
     const rfToken = req.cookies.refreshToken;
+    console.log({ rfToken });
     if (!rfToken)
       return res.status(400).json({ msg: "Please login or sign up" });
 
@@ -91,12 +91,9 @@ router.get("/refreshtoken", (req, res) => {
     jwt.verify(rfToken, process.env.REFRESH_TOKEN, (error, decoded) => {
       if (error)
         return res.status(400).json({ msg: "Please login or sign up" });
-      console.log(decoded);
       const accessToken = createAccessToken({ id: decoded.id });
       res.json({ decoded, accessToken });
     });
-
-    res.json({ msg: "DS", rfToken });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
