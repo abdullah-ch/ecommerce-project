@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const { Users, userSchema } = require("../models/user");
 const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -54,9 +55,7 @@ router.post("/login", async (req, res) => {
     const accessToken = createAccessToken({ id: user._id });
     const refreshToken = createRefreshToken({ id: user._id });
 
-    console.log({ accessToken, refreshToken });
-
-    let cookie = res.cookie("refreshToken", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/users/refreshtoken",
     });
@@ -94,6 +93,15 @@ router.get("/refreshtoken", (req, res) => {
       const accessToken = createAccessToken({ id: decoded.id });
       res.json({ decoded, accessToken });
     });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+//Getting User info
+router.get("/information", auth, (req, res) => {
+  try {
+    return res.json(req.user);
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
