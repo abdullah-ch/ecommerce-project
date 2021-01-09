@@ -99,9 +99,11 @@ router.get("/refreshtoken", (req, res) => {
 });
 
 //Getting User info
-router.get("/information", auth, (req, res) => {
+router.get("/information", auth, async (req, res) => {
   try {
-    return res.json(req.user);
+    let user = await Users.findById(req.user.id).select("-password");
+    if (!user) return res.status(400).json({ msg: "User Not Found" });
+    return res.json({ user });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
