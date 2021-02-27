@@ -5,6 +5,7 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const users = require("./routers/users");
+const category = require("./routers/category");
 
 const app = express();
 app.use(express.json());
@@ -30,6 +31,7 @@ mongoose
 
 // routes
 app.use("/users", users);
+app.use("/category", category);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

@@ -116,4 +116,5 @@ const createAccessToken = (userID) => {
 const createRefreshToken = (userID) => {
   return jwt.sign(userID, process.env.REFRESH_TOKEN, { expiresIn: "7d" });
 };
+
 module.exports = router;
