@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// only admin can update delete create categories
 router.post("/create", auth, authAdmin, async (req, res) => {
   try {
     const { name } = req.body;
@@ -32,4 +33,34 @@ router.post("/create", auth, authAdmin, async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 });
+
+// deleting a category
+
+router.delete("/delete/:id", auth, authAdmin, async (req, res) => {
+  try {
+    let category = await Category.deleteOne({ _id: req.params.id });
+    if (!category) return res.status(404).json({ msg: "ID not found" });
+    return res.json({ msg: "Deleted the category" });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+// updating a category
+
+router.put("/update/:id", auth, authAdmin, async (req, res) => {
+  try {
+    let category = await Category.findOne({ _id: req.params.id });
+    if (!category) return res.status(404).json({ msg: "ID not found" });
+    category.set({
+      name: req.body.name,
+    });
+
+    await category.save();
+    return res.json({ msg: "Updated the category" });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
 module.exports = router;
