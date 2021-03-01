@@ -11,9 +11,7 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// auth,  authAdmin,
-// brooo yeh yaad sae daal loo
-router.post("/upload", (req, res) => {
+router.post("/upload", auth, authAdmin, (req, res) => {
   try {
     console.log("Object keys", Object.keys(req.files).length);
     if (!req.files || Object.keys(req.files).lenght === 0)
@@ -54,7 +52,7 @@ router.post("/upload", (req, res) => {
   }
 });
 
-router.post("/delete", async (req, res) => {
+router.post("/delete", auth, authAdmin, (req, res) => {
   try {
     const { public_id } = req.body;
     if (!public_id)

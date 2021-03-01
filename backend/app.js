@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const users = require("./routers/users");
 const category = require("./routers/category");
+const products = require("./routers/product");
 const uploadImages = require("./routers/upload");
 
 const app = express();
@@ -34,6 +35,7 @@ mongoose
 app.use("/users", users);
 app.use("/category", category);
 app.use("/images", uploadImages);
+app.use("/products", products);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 });
 
 // only admin can update delete create categories
-router.post("/create", auth, authAdmin, async (req, res) => {
+router.post("/add", auth, authAdmin, async (req, res) => {
   try {
     const { name } = req.body;
     let category = await Category.findOne({ name });
