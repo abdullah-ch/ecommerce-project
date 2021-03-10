@@ -11,7 +11,7 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-router.post("/upload", auth, authAdmin, (req, res) => {
+router.post("/upload", (req, res) => {
   try {
     console.log("Object keys", Object.keys(req.files).length);
     if (!req.files || Object.keys(req.files).lenght === 0)
