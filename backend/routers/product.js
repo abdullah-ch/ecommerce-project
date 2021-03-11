@@ -17,6 +17,9 @@ router.get("/", async (req, res) => {
 
 router.delete("/delete/:id", async (req, res) => {
   try {
+    let product = await Product.deleteOne({ _id: req.params.id });
+    if (!product) return res.status(404).json({ msg: "ID not found" });
+    return res.json({ msg: "Deleted the product" });
   } catch (error) {
     return res.status(500).json({ msg: err.message });
   }
@@ -24,7 +27,6 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   try {
-    console.log("Heeelooooo");
     const {
       productId,
       title,
@@ -59,6 +61,21 @@ router.post("/add", async (req, res) => {
 
 router.put("/update/:id", async (req, res) => {
   try {
+    const { title, price, description, content, images, category } = req.body;
+    let product = await Product.findOne({ _id: req.params.id });
+    if (!product) return res.status(404).json({ msg: "ID not found" });
+
+    product.set({
+      title: title.toLowerCase(),
+      price: price,
+      description: description,
+      content: content,
+      images: images,
+      category: category,
+    });
+
+    await product.save();
+    return res.json({ product });
   } catch (error) {
     return res.status(500).json({ msg: err.message });
   }
