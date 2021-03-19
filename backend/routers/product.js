@@ -3,15 +3,41 @@ const bcrypt = require("bcrypt");
 const { Product, productSchema } = require("../models/product");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
+const authAdmin = require("../middleware/authAdmin");
 
 const router = express.Router();
 
+class Features {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+
+  filtering() {
+    const queryObject = this.queryString;
+    console.log("before delete page", queryObject);
+    const fields = ["page", "sort", "limit"];
+    fields.forEach(function (field) {
+      console.log("Field is ", field);
+      console.log("Query Object is ", queryObject);
+      console.log("queryObject[field] kiya haii", queryObject[field]);
+      delete queryObject[field]; // deletes the property field holds from queryObject
+      console.log(field);
+    });
+
+    console.log("after delete page", queryObject);
+    //console.log("Thissss", this);
+    return this;
+  }
+}
+
 router.get("/", async (req, res) => {
   try {
-    let products = await Product.find();
+    const features = new Features(Product.find(), req.query).filtering();
+    const products = await features.query;
     return res.json({ products });
   } catch (error) {
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ msg: error.message });
   }
 });
 
