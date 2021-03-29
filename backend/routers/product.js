@@ -11,37 +11,89 @@ class Features {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
+    //   console.log("I am the constructor", this.queryString);
   }
 
+  // This function is powerful
   filtering() {
+    // console.log("query string is ", this.queryString);
     const queryObject = this.queryString;
-    console.log("before delete page", queryObject);
     const fields = ["page", "sort", "limit"];
     fields.forEach(function (field) {
-      console.log("Field is ", field);
-      console.log("Query Object is ", queryObject);
-      console.log("queryObject[field] kiya haii", queryObject[field]);
-      delete queryObject[field]; // deletes the property field holds from queryObject
-      console.log(field);
+      // syntax
+      //delete object.property
+      //delete object["property"];
+      delete queryObject[field];
+      //console.log(field);
     });
 
-    console.log("after delete page", queryObject);
+    // console.log("after delete page", queryObject);
     //console.log("Thissss", this);
+    let queryStr = JSON.stringify(queryObject);
+    //console.log("queryStr before replacing isssssss", queryStr);
+    queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g, function (match) {
+      // console.log("Match issss", match);
+      // $gte $gt $lte $lte are all used in .find method
+      return "$" + match;
+    });
+
+    //console.log("queryStr after replacing isssssss", queryStr);
+    this.query.find(JSON.parse(queryStr));
+
+    //  console.log("returning query", this.query);
+    return this;
+  }
+
+  sorting() {
+    console.log("query string is ", this.queryString);
+    if (this.queryString.sort) {
+      const queryStringSort = this.queryString.sort.split(",").join(" ");
+      console.log("splitting", queryStringSort);
+
+      this.query.sort(queryStringSort);
+      //console.log(this.queryString.sort);
+    } else {
+      this.query.sort("-createdAt");
+    }
+
+    //  console.log("this in sorting", this);
+    return this;
+  }
+
+  pagination() {
+    // console.log("query string is ", this.queryString);
+
+    let limit = this.queryString.limit;
+    let page = this.queryString.page;
+    limit = limit * 1 || 2;
+    page = page * 1 || 1;
+    const skip = (page - 1) * limit;
+    console.log("Skip number", skip);
+    this.query = this.query.skip(skip).limit(limit);
+
     return this;
   }
 }
 
-router.get("/", async (req, res) => {
+router.get("/", auth, authAdmin, async (req, res) => {
   try {
-    const features = new Features(Product.find(), req.query).filtering();
+    console.log("I am in the get route", req.query);
+    const features = new Features(Product.find(), req.query)
+      .sorting()
+      .pagination()
+      .filtering();
     const products = await features.query;
-    return res.json({ products });
+    return res.json({
+      totalResults: products.length,
+      message: "success",
+      products: products,
+    });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", auth, authAdmin, async (req, res) => {
   try {
     let product = await Product.deleteOne({ _id: req.params.id });
     if (!product) return res.status(404).json({ msg: "ID not found" });
@@ -51,7 +103,7 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, authAdmin, async (req, res) => {
   try {
     const {
       productId,
@@ -85,7 +137,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", auth, authAdmin, async (req, res) => {
   try {
     const { title, price, description, content, images, category } = req.body;
     let product = await Product.findOne({ _id: req.params.id });
