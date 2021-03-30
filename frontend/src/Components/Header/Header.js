@@ -17,7 +17,7 @@ const Header = () => {
 
       <div className="logo">
         <Link to="/">
-          <img src={Logo} alt="berserk logo" width="100px" height="100px" />
+          <img src={Logo} alt="berserk logo" width="150px" height="150px" />
         </Link>
       </div>
 
