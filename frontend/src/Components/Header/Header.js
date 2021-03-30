@@ -22,15 +22,22 @@ const Header = () => {
 
       <ul>
         <li>
-          <Link to="/"> Products</Link>
+          <Link to="/products"> Products</Link>
         </li>
         <li>
-          <Link to="/"> Login - Register </Link>
+          <Link to="/login"> Login - Register </Link>
         </li>
         <li>
           <img src={Close} alt="close" width="30px" />
         </li>
       </ul>
+
+      <div className="cart">
+        <span>0</span>
+        <Link>
+          <img src={Cart} alt="close" width="30px" />
+        </Link>
+      </div>
     </header>
   );
 };

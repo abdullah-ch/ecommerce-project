@@ -4,12 +4,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import DataProvider from "./Components/GlobalState/GlobalState";
 import Pages from "./Components/Pages/Pages";
 import Header from "./Components/Header/Header";
+import "./App.css";
 
 const App = () => {
   return (
     <DataProvider>
       <Router>
-        <div>
+        <div className="App">
           <Pages />
           <h1>Helloo</h1>
           <Header />
