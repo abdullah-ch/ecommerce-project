@@ -1,5 +1,4 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import DataProvider from "./Components/GlobalState/GlobalState";
 import Pages from "./Components/Pages/Pages";
@@ -8,14 +7,14 @@ import "./App.css";
 
 const App = () => {
   return (
-    <DataProvider>
-      <Router>
-        <div className="App">
-          <Pages />
+    <div className="App">
+      <DataProvider>
+        <Router>
           <Header />
-        </div>
-      </Router>
-    </DataProvider>
+          <Pages />
+        </Router>
+      </DataProvider>
+    </div>
   );
 };
 

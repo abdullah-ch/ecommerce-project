@@ -17,7 +17,7 @@ const Header = () => {
 
       <div className="logo">
         <Link to="/">
-          <img src={Logo} alt="berserk logo" width="150px" height="150px" />
+          <img src={Logo} alt="berserk logo" width="100px" height="100px" />
         </Link>
       </div>
 
@@ -29,14 +29,14 @@ const Header = () => {
           <Link to="/login"> Login - Register </Link>
         </li>
         <li>
-          <img src={Close} alt="close" width="30px" />
+          <img className="menu" src={Close} alt="close" width="30px" />
         </li>
       </ul>
 
-      <div className="cart">
+      <div className="cart-icon">
         <span>0</span>
-        <Link>
-          <img src={Cart} alt="close" width="30px" />
+        <Link to="/cart">
+          <img src={Cart} alt="cart" width="30px" />
         </Link>
       </div>
     </header>
