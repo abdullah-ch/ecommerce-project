@@ -12,7 +12,6 @@ const App = () => {
       <Router>
         <div className="App">
           <Pages />
-          <h1>Helloo</h1>
           <Header />
         </div>
       </Router>

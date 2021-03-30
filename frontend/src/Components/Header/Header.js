@@ -3,6 +3,7 @@ import { GlobalState } from "../GlobalState/GlobalState";
 import Bars from "../../Assets/bars-solid.svg";
 import Cart from "../../Assets/shopping-cart-solid.svg";
 import Close from "../../Assets/times-solid.svg";
+import Logo from "../../Assets/Asset_24x.png";
 import "./Header.css";
 import { Link } from "react-router-dom";
 
@@ -15,9 +16,9 @@ const Header = () => {
       </div>
 
       <div className="logo">
-        <h1>
-          <Link to="/"> Berserk Logo Here</Link>
-        </h1>
+        <Link to="/">
+          <img src={Logo} alt="berserk logo" width="100px" height="100px" />
+        </Link>
       </div>
 
       <ul>
