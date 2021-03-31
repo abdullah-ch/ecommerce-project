@@ -10,7 +10,8 @@ const ProductAPI = () => {
 
   const callProductsApi = async () => {
     const response = await axios.get("/products");
-    console.log("products are", response.data.products);
+    // console.log("products are", response.data.products);
+    setProducts(response.data.products);
   };
   return { products: [products, setProducts] };
 };

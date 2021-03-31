@@ -8,10 +8,9 @@ const DataProvider = ({ children }) => {
 
   const state = {
     token: [token, setToken],
-    products: ProductAPI(),
+    productApi: ProductAPI(),
   };
 
-  ProductAPI();
   return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;
 };
 
