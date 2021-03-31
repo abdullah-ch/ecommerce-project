@@ -4,12 +4,15 @@ import ProductAPI from "../../api/ProductAPI";
 export const GlobalState = createContext();
 
 const DataProvider = ({ children }) => {
+  const [token, setToken] = useState(false);
+
+  const state = {
+    token: [token, setToken],
+    products: ProductAPI(),
+  };
+
   ProductAPI();
-  return (
-    <GlobalState.Provider value={"Whiplash Value"}>
-      {children}
-    </GlobalState.Provider>
-  );
+  return <GlobalState.Provider value={state}>{children}</GlobalState.Provider>;
 };
 
 export default DataProvider;

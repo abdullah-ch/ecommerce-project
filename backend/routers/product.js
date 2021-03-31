@@ -65,17 +65,18 @@ class Features {
 
     let limit = this.queryString.limit;
     let page = this.queryString.page;
-    limit = limit * 1 || 2;
+    limit = limit * 1 || 9;
     page = page * 1 || 1;
     const skip = (page - 1) * limit;
     console.log("Skip number", skip);
+    console.log("Limit is number", limit);
     this.query = this.query.skip(skip).limit(limit);
 
     return this;
   }
 }
 
-router.get("/", auth, authAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     console.log("I am in the get route", req.query);
     const features = new Features(Product.find(), req.query)

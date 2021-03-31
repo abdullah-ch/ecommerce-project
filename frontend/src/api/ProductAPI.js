@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const ProductAPI = () => {
@@ -10,7 +10,7 @@ const ProductAPI = () => {
 
   const callProductsApi = async () => {
     const response = await axios.get("/products");
-    console.log(response);
+    console.log("products are", response.data.products);
   };
   return { products: [products, setProducts] };
 };
