@@ -9,7 +9,7 @@ const ProductItem = ({ product }) => {
       <div className="product-box">
         <h2>{product.title}</h2>
         <span>${product.price}</span>
-        <p>{product.description}</p>
+        <p>{product.content}</p>
       </div>
 
       <div className="row-btn">
