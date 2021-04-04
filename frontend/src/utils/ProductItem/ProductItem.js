@@ -10,6 +10,7 @@ const ProductItem = ({ product }) => {
         <h2>{product.title}</h2>
         <span>${product.price}</span>
         <p>{product.content}</p>
+        <p>{product.description}</p>
       </div>
 
       <div className="row-btn">

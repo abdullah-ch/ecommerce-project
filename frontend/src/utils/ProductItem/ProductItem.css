@@ -1,11 +1,11 @@
 .product-card {
   max-width: 300px;
-  overflow: hidden;
-  height: 500px;
   padding: 15px;
   box-shadow: 0 0 15px #ddd;
   margin: 10px 0;
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .product-card img {
   width: 100%;
@@ -26,13 +26,22 @@
   color: crimson;
 }
 .product-box p {
-  width: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  height: 70px;
   color: #323232;
+  border: solid transparent;
   overflow: hidden;
+}
+
+.product-box p + p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: #323232;
+  border: 0px solid transparent;
+  overflow: hidden;
+  margin-bottom: 1rem;
 }
 .row_btn {
   width: 100%;
@@ -51,11 +60,9 @@
 }
 #btn-buy {
   background: #555;
-  margin-right: 5px;
 }
 #btn-view {
   background: teal;
-  margin-left: 5px;
 }
 .product-card input {
   position: absolute;
